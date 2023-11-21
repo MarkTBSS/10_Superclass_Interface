@@ -1,0 +1,301 @@
+1. Truth
+เมื่อใครนั่งอยู่กับที่ เขาอาจรู้ไม่รู้ว่าเขากำลังเคลื่อนที่อยู่
+ปาท่องโก๋ ที่คนไทยส่วนใหญ่รู้จัก มีชื่อเรียกว่า อิวจาก๊วย
+
+The C programming language has string data type.
+ภาษา C มี String [ถูกหรือผิดก็ได้]
+
+The C programming language has no string data type.
+ภาษา C ไม่มี String [ถูกหรือผิดก็ได้]
+
+The Java programming language has object data type.
+ภาษา Java มีข้อมูลแบบ Object [ถูกหรือผิดก็ได้]
+
+The Java programming language has no object data type.
+ภาษา Java ไม่มีข้อมูลแบบ Object [ถูกหรือผิดก็ได้]
+
+The "new" operator is use for creating an instance,
+because there is an operator that works inversely, 
+which is "instanceof".
+
+เกาหลีเหนือเป็นประเทศประชาธิปไตย มีการเลือกตั้งโดยประชาชน
+[ถูกหรือผิดก็ได้]
+
+2. Reason versus Statistics
+ไม่ว่าใครก็ตาม แทบไม่เคยมีใครตัดสินใจด้วยเหตุผล
+ส่วนใหญ่ตัดสินใจด้วย Statistics ซึ่งคงมีเหตุผลซ่อนอยู่ข้างใน
+บางครั้งคนจะตัดสินใจจากกระแสความนิยม
+
+Spring Container
+https://javapuzzle.com/spring-container.html
+
+Spring Container มี 2 แบบคือ
+1. BeanFactory เลิกใช้
+2. ApplicationContext ยังใช้อยู่
+
+วิธีอธิบายวิธีหนึ่ง บอกหน้าที่ของ ApplicationContext
+มีหน้าที่ 3 อย่าง ทั้ง 3 อย่างนี้เรียกรวมกันว่า Manage
+1. สร้าง Spring Bean
+2. เก็บข้อมูล Spring Bean เช่นชื่อ Bean, ชื่อ Class, และ Address
+3. A. Lookup แต่ละ Spring Bean ตามเงื่อนไข เช่นชื่อ Class, ชื่อ Bean
+   B. แล้วส่ง Address ไปให้ Code ที่ต้องการใช้งาน
+
+   3A = Inversion of Control สร้าง Instance ที่อื่นแล้ว Lookup แทน
+   3B = Dependency Injection
+
+Direct Control
+User u = new User();
+u.name = "Luna";
+u.dob = "1981-02-13";
+u.gender = Gender.FEMALE;
+.
+.
+
+วันนี้ตอนจบจะเป็น Spring Boot ดังนั้นเริ่มจากการสร้าง Package ด้วย
+Package ~ Folder
+'-- ใน Context ของ Java คำว่า Package คือ Folder
+
+java-15
+'-- pom.xml
+'-- code                    .---------------------------.
+'   '-- java                | package java;             |
+'       '-- Start.java      | class Start { }           |
+'-- test                    '---------------------------'
+    '-- java
+        '-- Test.java
+
+File: pom.xml
+<project>
+	<modelVersion>4.0.0</modelVersion>
+	<groupId>mycompany</groupId>
+	<artifactId>java-15</artifactId>
+	<version>0.8</version>
+	<dependencies>
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-web</artifactId>
+			<version>RELEASE</version>
+		</dependency>
+	</dependencies>
+	<build>
+		<sourceDirectory>code</sourceDirectory>
+		<testSourceDirectory>test</testSourceDirectory>
+	</build>
+	<properties>
+		<maven.compiler.source>21</maven.compiler.source>
+		<maven.compiler.target>21</maven.compiler.target>
+	</properties>
+</project>
+
+Spring IoC Container หรือ Spring Container
+มีหน้าที่คือ Manage Spring Beans
+1. Create, 2. Store, 3. Lookup
+
+Spring Container มีสองแบบคือ 1. BeanFactory และ 2. ApplicationContext
+เมื่อวานใช้ 
+1. GenericApplicationContext สร้าง Bean โดยการเรียกใช้ Method ชื่อ registerBean()
+2. FileSystemXmlApplicationContext สร้าง Bean ด้วย XML
+3. AnnotationConfigApplication
+4. SpringApplication
+แบบ 3 กับ 4 คือสร้าง Spring Bean ด้วย Annotation เช่น @Bean
+
+แบบ 3 กับ 4 คือสร้าง Spring Bean ด้วย Annotation
+ต้องมี Class ที่เรียกว่า Configuration Class ทำหน้าที่สร้าง Spring Bean
+โดย ApplicationContext จะเรียก Method ทีละตัวเลย
+1 Method สร้าง Spring Bean 1 ตัว
+1 Method ที่มีคำว่า @Bean นำหน้า สร้าง Spring Bean 1 ตัว
+
+Configuration Class ในอดีตต้องมีคำนำหน้าว่า @Configuration
+ปัจจุบันมีหรือไม่มีก็ได้
+
+package main;
+import org.springframework.context.ApplicationContext;
+import org.springframework.context.annotation.AnnotationConfigApplicationContext;
+import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.Configuration;
+
+class Start {
+	public static void main(String[] data) {
+		ApplicationContext context;
+		context = new AnnotationConfigApplicationContext
+						(Setup.class);
+		Branch u = context.getBean("ny", Branch.class);
+		System.out.println(u.name); // New York
+	}
+}
+
+@Configuration
+class Setup {
+	@Bean("ny")
+	Branch createx() {
+		Branch b = new Branch();
+		b.name = "New York"; b.area = 87.5;
+		return b;
+	}
+	@Bean("at")
+	Branch createy() {
+		Branch b = new Branch();
+		b.name = "Atlanta"; b.area = 100.0;
+		return b;
+	}
+}
+
+class Branch {
+	String name;
+	double area;
+}
+
+SAP เขียน Code ก่อน แล้ว Configure ทีหลัง
+เพราะค่าใช้จ่ายในการ Configure น้อยกว่า การเขียน Code
+
+Agile เป็นหลักการทำงานที่รองรับ Requirement ที่เปลี่ยนแปลงได้ตลอดเวลา
+Agile มีหลายแบบ เช่น Scrum, Extreme Programming, ...
+Extreme Programming มี Practice อยู่ 12 ข้อ หนึ่งในนั้นคือ Refacto
+Refactor เปลี่ยนโครงสร้างของ Code เช่น
+- เปลี่ยนชื่อ Method, เปลี่ยนชื่อ Class, เปลี่ยนชื่อ Package
+- ย้าย Method ไป Class อื่น
+- แยก Class ขนาดใหญ่ให้เป็นหลาย Class
+
+1990 HTML + CGI
+1995 Write business logic inside HTML: PHP, JSP
+
+     /index.html
+     /login.php
+     /pay.jsp
+
+2002 Write a simple program to receive all requests
+
+                             Controller
+                             ----------
+ /login ------->     ------> showLogInPage()
+ /search ------>     ------> showSearchPage()
+ / ------------>  /  ------> showHomePage()
+ /pay --------->  '  ------> showPaymentPage()
+                  '
+                  '------> A simple program
+                           to receive all requests
+                           and call the suitable function
+
+MVC Web Application Framework
+เกิดขึ้นมาครั้งที่ Spring MVC แต่ล้มเหลว ผู้คนตั้งคำถามกับแนวคิดนี้มากมาย
+1. จะเขียน Program ตัวกลางได้ดีหรือเปล่า
+2. จะเกิดปัญหาคอขวดหรือ Bottleneck หรือเปล่า
+3. วิธีเดิมก็ดีอยู่แล้ว จะมาทำให้เสียเวลาทำไม
+4. ผิดหลักการเดิมของ HTTP
+
+แต่ต่อมาปี 2004 มีชายคนหนึ่งชื่อ David Hansson (dhh.dk)
+ได้เห็นแนวคิดของ Spring MVC แล้วนำมาเขียน Framework ในภาษา Ruby
+ตั้งชื่อว่า Rails หรือ Ruby on Rails ประสบความสำเร็จทันทีเลย
+ในช่วงนั้น ภาษา Ruby ได้รับฉายาใหม่จากสื่อมวลชนว่า The next Java
+
+แนวคิดของ Ruby on Rails มีสองข้อ
+1. DRY - Don't Repeat Yourself
+2. CoC - Convention over Configuration
+
+แนวคิด MVC Web Application Framework ค่อนข้างยาว
+ขอ Focus ไปแค่ Controller ก่อน
+
+ใน Spring มี Controller อยู่สองแบบ คือ Controller และ RestController
+ทั้งสองแบบอยู่ในกลุ่มที่เรียกว่า Spring Stereotype มี 6 แบบ
+
+การสร้าง Spring Bean โดยใช้ Annotation มีวิธีเดียวคือ
+วางคำว่า @Bean ไว้หน้า Method โดย Method ต้องอยู่ใน Configuration Class ด้วย
+
+แต่ต่อมาก็มีวิธีที่สองคือ วาง Annotation ไว้หน้า Class เรียกว่า Spring Stereotype
+มี 6 แบบ
+1. @Component      ใช้สร้าง Spring Bean ที่ไม่เกี่ยวข้องกับ 2 หรือ 3
+2. @Repository     ใช้อ่านเขียนข้อมูลจาก Database หรือ จาก File
+3. @Service        ใช้เขียน Business Logic
+4. @Indexed        เพื่อให้ Lookup ได้เร็วขึ้น ข้อ 1,2,3 ได้รวม @Indexed ไว้แล้ว
+5. @Controller     ใช้เขียน MVC Web Application
+6. @RestController ใช้เขียน Web Service
+
+Web Service มีแค่ Controller พอแล้ว
+Web Service ง่ายกว่า Web Application
+Web Service เป็น Buzzword พูดแล้วดูมีความรู้
+
+
+กลับมาที่ Directory
+
+java-15
+'-- pom.xml
+'-- code
+'   '-- main
+'       '-- Start.java     (Start, Setup, Sample)
+'       '-- Service.java
+'
+
+File: code/main/Start.java
+package main;
+import org.springframework.boot.SpringApplication;
+import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.context.ApplicationContext;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
+
+class Start {
+	public static void main(String[] data) {
+		ApplicationContext context;
+		context = SpringApplication.run(Setup.class);
+	}
+}
+
+@SpringBootApplication
+class Setup { }
+
+@RestController
+class Sample {
+	@RequestMapping("/check") double check() {
+		return 123.4567;
+	}
+}
+
+File: code/main/Service.java
+package main;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
+
+@RestController
+class Service {
+	@RequestMapping("/api/get-location")
+	String m1() {
+		return "Bangkok";
+	}
+	@RequestMapping("/api/get-products")
+	String[] m2() {
+		String[] data = {"Latte", "Mocha" };
+		return data;
+	}
+	@RequestMapping("/api/get-hq-name")
+	String m3() {
+		return hq.name;
+	}
+	@Autowired HeadQuarter hq;
+	
+	// http://localhost:8080/api/get-total?price=120
+	@RequestMapping("/api/get-total")
+	String m4(String price) {
+		try {
+			double p = Double.valueOf(price);
+			return "" + p * 1.07;
+		} catch (Exception e) {
+			return "Invalid price";
+		}
+	}
+}
+
+@Component
+class HeadQuarter {
+	String name = "Atlanta";
+}
+
+https://codestar.work/java-2023-11-15.txt
+
+
+
+
+
+
+
